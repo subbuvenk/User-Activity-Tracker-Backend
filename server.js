@@ -23,7 +23,7 @@ app.use(bodyParser());
 
 app.set('view engine', 'ejs');
 
-app.use(session({secret:'adaptivewebassignment'}));
+app.use(session({secret:''}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
