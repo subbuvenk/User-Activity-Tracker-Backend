@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Adaptive Assignment</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		body {
+			padding-top: 80px;
+			word-wrap:break-word;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">	
+
+		<div class="page-header text-center">
+			<h1><span class="fa fa-file-code-o"></span> Adaptive assignment </h1>
+			<a href="/logout" class="btn btn-default btn-sm">Logout</a>
+		</div>
+
+		<div class="row">
+			
+			<div class="col-sm-6">
+				<div class="well">
+					<h3><span class="fa fa-user-circle"></span> User login details</h3>
+
+						<p>
+							<strong>Email:</strong> <%= user.local.email %><br>
+						</p>
+
+				</div>
+			</div>
+
+			<div class="col-sm-6">
+				<div class="well">
+					<h3><span class="fa fa-tasks"></span> User Activity</h3>
+
+						<p>
+							<strong>Clicks:</strong> <!--Insert values from DB--> <br>
+							<strong>Scrolls:</strong> <!--Insert values from DB--> <br>
+						</p>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</body>
+</html>
+
+
