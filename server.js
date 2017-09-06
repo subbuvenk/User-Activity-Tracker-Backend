@@ -23,7 +23,7 @@ app.use(bodyParser());
 
 app.set('view engine', 'ejs');
 
-app.use(session({secret:'adaptivewebassignment'}));
+app.use(session({secret:'adaptivewebassignment', ßcookie: { maxAge: 3600000 } }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
@@ -33,4 +33,4 @@ require('./app/routes.js')(app, passport);
 
 //FINISH
 app.listen(port);
-console.log('Server started and listening on' + port);
+console.log('Server started and listening on', port);

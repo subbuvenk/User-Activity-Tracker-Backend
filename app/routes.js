@@ -1,3 +1,6 @@
+var Activity = require('./models/activity');
+var Login = require('./models/login');
+
 module.exports = function(app, passport) {
 
 
@@ -8,6 +11,8 @@ module.exports = function(app, passport) {
 
 	//LOGIN GET
 	app.get('/', function(req, res) {
+		if (req.isAuthenticated())
+			res.redirect('/profile');
 		res.render('login.ejs', { message: "" });
 	});
 
@@ -22,16 +27,20 @@ module.exports = function(app, passport) {
 		    }
 		    req.logIn(user, function(err) {
 			    if (err) { return next(err); }
+			    var log = new Object();
+			    log.email = user.local.email;
+			    log.action = "Login";
+			    let now = (new Date()).toJSON();
+				log.timestamp = now;
+				Login.create(log, function (error, user) {
+				if (error) {
+					console.log(error);
+				} 
+			});
 	      		return res.redirect('/profile');
 		    });
   		})(req, res, next);
 	});
-
-	// app.post('/login', passport.authenticate('local-login', {
-	// 	successRedirect : '/profile',
-	// 	failureRedirect : '/',
-	// 	failureFlash : true
-	// }));
 
 	//SIGNUP FORM
 	app.get('/signup', function(req, res) {
@@ -46,33 +55,74 @@ module.exports = function(app, passport) {
 	}));
 
 	//PROFILE PAGE
-	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', { user: req.user});
+	app.get('/profile', isLoggedIn, getActivity, getLogin, function(req, res) {
+		res.render('profile.ejs', { user: req.user, activity: req.activity, login: req.login});
 	});
 
+	//USER LOGOUT
 	app.get('/logout', function(req, res) {
+		var log = new Object();
+	    log.email = req.user.local.email;
 		req.logout();
 		if(req.user)
-			console.log('comes here!');
 			res.render('/', { message: "User data still present"});
+	    let now = (new Date()).toJSON();
+	    log.action = "Logout";
+		log.timestamp = now;
+		Login.create(log, function (error, user) {
+		if (error)
+			console.log(error);
+		});
 		res.redirect('/');
 	});
 
 	//CHECK LOGGED IN
 	app.get('/loggedIn', function(req, res) {
 		if(req.isAuthenticated()) 
-	        res.status(200).send("Logged in as: " + req.user.local.email);
+	        res.status(200).send(req.user.local.email);
 	    else
-	        res.status(404).send("User not logged in");
+	        res.status(404).send("Please log in");
 	});
 
+	//CHROME EXTENSION ENDPOINT FOR LOGS
 	app.post('/userLog', function(req, res) {
 		if (req.isAuthenticated()) {
+			req.body.email = req.user.local.email;
+			Activity.create(req.body, function (error, user) {
+				if (error) {
+					console.log(error);
+				} else {
+					return res.send("success");
+				}
+			});
+		}
+		else {
+			console.log("User is not logged in");
 			console.log(req.body);
 		}
-		else
-			console.log(req.body);
 	});
+
+	//ROUTE MIDDLEWARE TO PASS USER LOGIN HISTORY
+	function getLogin(req, res, next) {
+		Login.find({'email': req.user.local.email}, 'timestamp action', function(err, login) {
+			if (err)
+				throw err;
+			else
+				req.login = login;
+				return next();
+		});
+	}
+
+	//ROUTE MIDDLEWARE TO PASS USER ACTIVITY HISTORY
+	function getActivity(req, res, next) {
+		Activity.find({'email': req.user.local.email}, 'timestamp activity text url title tag question', function(err, activity) {
+			if(err) 
+				throw err;
+			else 
+				req.activity = activity;
+				return next();
+		});
+	}
 
 	//ROUTE MIDDLEWARE USER LOGIN VERIFICATION
 	function isLoggedIn(req, res, next) {

@@ -14,40 +14,176 @@
 </head>
 <body>
 	<div class="container">	
+		
+		<nav class="navbar navbar-default navbar-fixed-top">
+		    <div class="container">
+		        <!-- Brand and toggle get grouped for better mobile display -->
+		        <div class="navbar-header page-scroll">
+		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		                <span class="sr-only">Toggle navigation</span>
+		                <span class="icon-bar"></span>
+		                <span class="icon-bar"></span>
+		                <span class="icon-bar"></span>
+		            </button>
+		            <a class="navbar-brand" href="/"><h4>Adaptive assignment 1</h4></a>
+		        </div>
+		        <!-- Collect the nav links, forms, and other content for toggling -->
+		        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		            <ul class="nav navbar-nav navbar-right">
+		                <li>
+		                    <a href="https://stackoverflow.com/questions/tagged/java?sort=frequent&pageSize=15"><h4>Stack Overflow</h4></a>
+		                </li>
 
-		<div class="page-header text-center">
-			<h1><span class="fa fa-file-code-o"></span> Adaptive assignment </h1>
-			<a href="/logout" class="btn btn-default btn-sm">Logout</a>
-		</div>
+		                <li>
+		                    <a href=""><h4><%= user.local.email %></h4></a>
+		                </li>
+		                <li class="page-scroll">
+		                    <a href="/logout"><h4>Logout</h4></a>
+		                </li>
+		            </ul>
+		        </div>
+		        <!-- /.navbar-collapse -->
+		    </div>
+		    <!-- /.container-fluid -->
+		</nav>
 
 		<div class="row">
 			
-			<div class="col-sm-6">
+			<div class="col-sm-4">
 				<div class="well">
-					<h3><span class="fa fa-user-circle"></span> User login details</h3>
+					<h3><span class="fa fa-user-circle"></span> User login Logs</h3>
 
-						<p>
-							<strong>Email:</strong> <%= user.local.email %><br>
-						</p>
+					<div style="height: 500px !important; overflow: scroll;">
+					<table id="login" class="table table-striped">
+					
+						<% if (login.length > 0) { %>
+				        	<thead>
+				        		<tr>
+				        			<th>Timestamp</th>
+				        			<th>Activity</th>
+			        			</tr>
+		        			</thead>
+		        			<% for(var i=login.length-1; (i>=0); i--) { %>
+		        				<tr>
+							     	<td><%= login[i].timestamp %></td>
+							     	<td><%= login[i].action %></td>
+							    </tr>
+						    <% } %>
+				    	<% } %>
+					</table>
+					</div>
 
 				</div>
 			</div>
 
-			<div class="col-sm-6">
+			<div class="col-sm-8">
 				<div class="well">
 					<h3><span class="fa fa-tasks"></span> User Activity</h3>
 
-						<p>
-							<strong>Clicks:</strong> <!--Insert values from DB--> <br>
-							<strong>Scrolls:</strong> <!--Insert values from DB--> <br>
-						</p>
+						<div style="height: 500px !important; overflow: scroll;">
+						<table id="activity" class="table table-striped"">
+					
+							<% if (activity.length > 0) { %>
+					        	<thead>
+					        		<tr>
+					        			<th>Timestamp</th>
+					        			<th>Activity</th>
+					        			<th>Details</th>
+				        			</tr>
+			        			</thead>
+			        			<% for(var i=activity.length-1; (i>=0); i--) { %>
+			        				<tr>
+								     	<td><%= activity[i].timestamp %></td>
+								     	<td><%= activity[i].activity %></td>
+							     		
+							     		<% if (activity[i].question) { %>
+							     		<td><%= activity[i].question %></td>
+							     		<% } %>
+							     		<% if (activity[i].text) { %>
+							     		<td><%= activity[i].text %></td>
+							     		<% } %>
+							     		<% if (activity[i].tag) { %>
+							     		<td><%= activity[i].tag %></td>
+							     		<% } %>
+							     		<% if (activity[i].title) { %>
+							     		<td><%= activity[i].title %></td>
+							     		<% } %>
+							     		<% if (activity[i].url) { %>
+							     		<td><%= activity[i].url %></td>
+							     		<% } %>
+							     		<% if (!activity[i].url && !activity[i].tag && !activity[i].text && !activity[i].question && !activity[i].title) { %>
+							     		<td>None</td>
+							     		<% } %>
+								     	
+								    </tr>
+							    <% } %>
+					    	<% } %>
+
+						</table>
+						</div>
 
 				</div>
 			</div>
 
 		</div>
 
+		<div class="row">
+
+			<div class="col-sm-12">
+				<div class="well">
+					<h3><span class="fa fa-file-code-o"></span> Choice of activity tracked:</h3>
+					
+					<br>
+					<p><h4><span class="fa fa-arrows-v"></span> Upvotes/ Downvotes:</h4></p>
+					<p>Upvoting/ Downvoting is one of the fundamental activities performed by the user on Stack Overflow. It reveals information about the user's interests more specifically than the user history on the site. Usually users are only critical of the posts that are most relevant to them.</p>
+
+					<br>
+					<p><h4><span class="fa fa-tag"></span> Tag clicks:</h4></p>
+					<p>Users click on tags to explore that certain section of Stack Overflow. Tracking this activity will give us cues on the user's interests. Unlike questions, tags are an exploratory option, therefore revealing immense interest from ther user's side.</p>
+
+					<br>
+					<p><h4><span class="fa fa-pencil-square-o"></span> Suggest edit:</h4></p>
+					<p>Suggesting edits to any question or answer is either a sign of mastery or inquisitiveness from the user's perspective. Also, it signals us about the contribution level of the users.</p>
+
+					<br>
+					<p><h4><span class="fa fa-bookmark"></span> Bookmarking:</h4></p>
+					<p>By bookmarking, the user saves the question for future reference. Bookmarking also implies an active interest at the present moment. Tracking bookmarks gives us an opportunity to adapt to the current or future interest shown by the user.</p>
+
+					<br>
+					<p><h4><span class="fa fa-question"></span> Question links:</h4></p>
+					<p>The user history of question visits through link clicks give away the questions that the user is willing to contribute to or learn from. By using this information, we could adapt the content with respect to what the user seeks out until a stop to the trend is noticed.</p>
+
+					<br>
+					<p><h4><span class="fa fa-pencil"></span> Post Answers/Question:</h4></p>
+					<p>The user posts questions that are not already existent in Stack Overflow. The user participates by answering about questions that they have mastery in. Using this data, we should be able to identify what the user is looking for or participate in.</p>
+
+					<br>
+					<p><h4><span class="fa fa-mouse-pointer"></span> Mouse movement:</h4></p>
+					<p>Analysis of mouse movement through the page can reveal many levels of information from the user's behaviour. It can reveal the user's subconscious interest without any active tasks from the user. The tracked coordinates which will map with the coordinates of the elements on</p>
+
+				</div>
+			</div>	
+
+		</div>
+
+		<div class="row">
+
+			<div class="col-sm-12">
+				<div class="well">
+					<h3><span class="fa fa-check-square-o"></span> Bonus tracking activity:</h3>
+
+					<br>
+					<p><h4><span class="fa fa-files-o"></span> Copy to clipboard:</h4></p>
+					<p>The users copy the text/code from posts to be used elsewhere or to store it for future reference. The copied text is of significance as it can denote the context that piqued the user's interest.</p>
+
+				</div>
+			</div>	
+
+		</div>
+
+
 	</div>
+
 </body>
 </html>
 
