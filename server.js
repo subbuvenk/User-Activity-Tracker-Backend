@@ -24,7 +24,7 @@ app.use(bodyParser());
 app.use('views', __dirname+'/views');
 app.set('view engine', 'ejs');
 
-app.use(session({secret:'adaptivewebassignment', ßcookie: { maxAge: 3600000 } }));
+app.use(session({secret:'', cookie: { maxAge: 3600000 } }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
