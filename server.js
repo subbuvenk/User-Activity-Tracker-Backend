@@ -21,6 +21,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser());
 
+app.use('views', __dirname+'/views');
 app.set('view engine', 'ejs');
 
 app.use(session({secret:'adaptivewebassignment', ßcookie: { maxAge: 3600000 } }));

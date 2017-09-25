@@ -98,7 +98,6 @@ module.exports = function(app, passport) {
 		}
 		else {
 			console.log("User is not logged in");
-			console.log(req.body);
 		}
 	});
 
